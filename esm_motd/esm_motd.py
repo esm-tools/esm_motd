@@ -4,7 +4,7 @@ import yaml
 
 class motd_handler:
     def __init__(self):
-        url = 'https://raw.githubusercontent.com/dbarbi/motd/master/motd.yaml'
+        url = 'https://raw.githubusercontent.com/esm-tools/esm_tools/motd/configs/esm_software/esm_motd/motd.yaml'
         try:
             self.motdfile = urllib.request.urlopen(url)
         except:
