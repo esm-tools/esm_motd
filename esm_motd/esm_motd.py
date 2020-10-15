@@ -1,15 +1,17 @@
 import urllib.request
 import sys
 import yaml
+from time import sleep
 
 class motd_handler:
     def __init__(self):
-        url = 'https://raw.githubusercontent.com/esm-tools/esm_tools/motd/configs/esm_software/esm_motd/motd.yaml'
+        url = 'https://raw.githubusercontent.com/esm-tools/esm_tools/motd/motd.yaml'
         try:
             self.motdfile = urllib.request.urlopen(url)
         except:
             print(f"Connection to file {url} containing update messages could not be established")
             print("Please check by hand...")
+            sleep(10)
             self.database_connected = False
             self.message_dict = {}
             return 
@@ -54,7 +56,7 @@ class motd_handler:
             waittime = int(action.replace("DELAY", "").replace("(", "").replace(")", "").strip())
             sleep(waittime)
         if action.startswith("ERROR"):
-            print("Can't work under these circumstances.")
+            print("Can't work under these circumstances, exiting...")
             sys.exit(-1)
 
     def motd_handler(self, mypackage, myversion):
@@ -63,7 +65,13 @@ class motd_handler:
         for message in self.message_dict:
             if self.message_dict[message]["package"] == mypackage and \
                self.check_valid_version(myversion, self.message_dict[message]["versions"]):
+                   print ("************************************************************************************")
+                   print(f"Message found for package {mypackage} version {myversion}:")
+                   print()
                    print (self.message_dict[message]["message"])
+                   print (f"Upgrade this package by typing:              esm_versions upgrade {mypackage}")
+                   print (f"Upgrade all packages by typing:              esm_versions upgrade")
+                   print ("************************************************************************************")
                    self.action_handler(self.message_dict[message]["action"])
         return
 
