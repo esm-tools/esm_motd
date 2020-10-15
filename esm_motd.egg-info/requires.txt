@@ -1,1 +1,0 @@
-esm_version_checker@ git+https://gitlab.awi.de/esm_tools/esm_version_checker.git
