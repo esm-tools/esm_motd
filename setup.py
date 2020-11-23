@@ -10,8 +10,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ["esm_version_checker @ git+https://gitlab.awi.de/esm_tools/esm_version_checker.git",
-               ]
+requirements = ["esm_version_checker @ git+https://github.com/esm-tools/esm_version_checker.git", ]
 
 setup_requirements = [ ]
 
