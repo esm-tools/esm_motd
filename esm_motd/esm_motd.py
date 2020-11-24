@@ -10,11 +10,11 @@ class motd_handler:
         try:
             self.motdfile = urllib.request.urlopen(url)
         except urllib.error.HTTPError:
-            timeout = 10   # seconds to wait
+            timeout = 1   # seconds to wait
             print(f"HTTP Error: Connection to file {url} containing update messages could not be established")
             print("    Please check the URL by manually...")
-            print(f"    Program will proceed in {timeout} seconds\n")
-            sleep(timeout)
+            #print(f"    Program will proceed in {timeout} seconds\n")
+            #sleep(timeout)
             self.database_connected = False
             self.message_dict = {}
             return 
