@@ -1,4 +1,5 @@
 import urllib.request
+import urllib
 import sys
 import yaml
 from time import sleep
@@ -8,10 +9,12 @@ class motd_handler:
         url = 'https://raw.githubusercontent.com/esm-tools/esm_tools/motd/motd.yaml'
         try:
             self.motdfile = urllib.request.urlopen(url)
-        except:
-            print(f"Connection to file {url} containing update messages could not be established")
-            print("Please check by hand...")
-            sleep(10)
+        except urllib.error.HTTPError:
+            timeout = 10   # seconds to wait
+            print(f"HTTP Error: Connection to file {url} containing update messages could not be established")
+            print("    Please check the URL by manually...")
+            print(f"    Program will proceed in {timeout} seconds\n")
+            sleep(timeout)
             self.database_connected = False
             self.message_dict = {}
             return 
