@@ -6,7 +6,7 @@ from time import sleep
 
 class motd_handler:
     def __init__(self):
-        url = 'https://raw.githubusercontent.com/esm-tools/esm_tools/motd/motd.yaml'
+        url = 'https://raw.githubusercontent.com/esm-tools/esm_tools/release/esm_tools/motd/motd.yaml'
         try:
             self.motdfile = urllib.request.urlopen(url)
         except urllib.error.HTTPError:
@@ -53,18 +53,29 @@ class motd_handler:
         else:
             return False
 
-    def action_handler(self, action):
+    def action_finder(self, action):
         action = action.upper()
         if action.startswith("DELAY"):
             waittime = int(action.replace("DELAY", "").replace("(", "").replace(")", "").strip())
-            sleep(waittime)
+            return ("sleep", waittime)
         if action.startswith("ERROR"):
-            print("Can't work under these circumstances, exiting...")
-            sys.exit(-1)
+            return ("error", 0)
+
+
+    def action_handler(self, action, time):
+        if action:
+            if action == "sleep":
+                sleep(time)
+            elif action == "error":
+                print("Can't work under these circumstances, exiting...")
+                sys.exit(-1)
+
 
     def motd_handler(self, mypackage, myversion):
         if not self.database_connected:
             return
+        action = None
+        time = -1
         for message in self.message_dict:
             if self.message_dict[message]["package"] == mypackage and \
                self.check_valid_version(myversion, self.message_dict[message]["versions"]):
@@ -75,7 +86,11 @@ class motd_handler:
                    print (f"Upgrade this package by typing:              esm_versions upgrade {mypackage}")
                    print (f"Upgrade all packages by typing:              esm_versions upgrade")
                    print ("************************************************************************************")
-                   self.action_handler(self.message_dict[message]["action"])
+                   thisaction, thistime = self.action_finder(self.message_dict[message]["action"])
+                   if thisaction == "error" or thistime > time: 
+                       action = thisaction
+                       time = thistime
+        self.action_handler(action, time)
         return
 
 
