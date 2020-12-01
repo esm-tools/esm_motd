@@ -42,6 +42,6 @@ setup(
     setup_requires=setup_requirements,
     tests_require=test_requirements,
     url='https://github.com/esm-tools/esm_motd',
-    version='4.0.0',
+    version='5.0.0',
     zip_safe=False,
 )
