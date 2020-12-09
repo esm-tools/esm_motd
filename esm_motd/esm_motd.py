@@ -105,7 +105,11 @@ def check_all_esm_packages():
 def get_version_numbers():
     import importlib
     import pkg_resources
-    from esm_version_checker import esm_tools_modules
+    from esm_version_checker import get_esm_packages  
+
+    # get the list of ESM-Tools as a list of strings
+    esm_tools_modules = get_esm_packages()
+    
     installed_packages_and_versions = []
     for tool in esm_tools_modules:
         version = "unknown"
